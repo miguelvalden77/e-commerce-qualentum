@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react"
 
 
-const Banner = () => {
+const Banner = ({ user }) => {
 
     return (
         <section className="banner-section">
-            <button>!20% de descuento para nuevos clientes!</button>
+            <button>{user ? `¡${user.username} aprovéchate de tu 20% de descuento!` : "Registrate para recibir un 20% de descuento"}</button>
         </section>
     )
 }

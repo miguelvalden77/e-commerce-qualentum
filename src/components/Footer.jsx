@@ -1,9 +1,13 @@
+import { useSelector } from "react-redux"
 
 
 const Footer = () => {
 
+    const { theme } = useSelector((state) => state.product)
+
+
     return (
-        <footer className="footer">
+        <footer className="footer" style={{ backgroundColor: theme == "dark" ? "gray" : "blue" }}>
             <section className="info-footer">
                 <article>
                     <h3>Contacto</h3>
