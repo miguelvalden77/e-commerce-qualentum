@@ -143,3 +143,8 @@ a {
   padding-top: 1.5rem;
   font-size: 0.9rem;
 }
+
+.add-section {
+  display: flex;
+  justify-content: space-between;
+}
