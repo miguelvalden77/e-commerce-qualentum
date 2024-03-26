@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { changeTheme } from "../redux/productSlice"
+import { changeTheme, removeUser, updateVisible } from "../redux/productSlice"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
 const rutas = [
     { nombre: "Inicio", link: "/" },
@@ -9,12 +11,22 @@ const rutas = [
     { nombre: "Contacto", link: "/contacto" }
 ]
 
-const Navbar = ({ logout }) => {
+const Navbar = () => {
 
     const { theme } = useSelector((state) => state.product)
-    console.log(theme)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const [busqueda, setBusqueda] = useState("")
 
+    const logout = () => {
+        dispatch(removeUser())
+        navigate("/")
+    }
+
+    const handleChange = (evt) => {
+        setBusqueda(evt.target.value)
+        dispatch(updateVisible(evt.target.value))
+    }
 
     return (
         <nav className="navbar" style={{ backgroundColor: theme == "dark" ? "gray" : "blue" }}>
@@ -26,9 +38,9 @@ const Navbar = ({ logout }) => {
                     ))
                 }
             </section>
-            <input className="input-search" type="text" placeholder="Buscar productos" />
+            <input className="input-search" type="text" placeholder="Buscar productos" onChange={handleChange} value={busqueda} />
             <section className="emojis-section">
-                <Link to={"/cesta"}>🛒</Link>
+                <Link to={"/cart"}>🛒</Link>
                 <Link to={"#"}>💙</Link>
                 <Link to={"/login"}>🧔</Link>
                 <button onClick={() => dispatch(changeTheme())}>{theme}</button>
