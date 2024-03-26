@@ -1,8 +1,13 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { addUser } from "../redux/productSlice"
+import { useNavigate } from "react-router-dom"
 
-const Login = ({ setUser }) => {
+const Login = () => {
 
     const [userInfo, setUserInfo] = useState({ username: "", email: "" })
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const updateUserInfo = (evt) => {
         setUserInfo({ ...userInfo, [evt.target.name]: evt.target.value })
@@ -12,9 +17,9 @@ const Login = ({ setUser }) => {
     const loginUser = (evt) => {
         evt.preventDefault()
         if (userInfo.username.trim() == "" || userInfo.email.trim() == "") return
-        localStorage.setItem("user", `{"username": "${userInfo.username}", "email": "${userInfo.email}"}`)
-        setUser(userInfo)
+        dispatch(addUser(userInfo))
         setUserInfo({ username: "", email: "" })
+        navigate("/")
     }
 
     return (

@@ -7,28 +7,25 @@ import Banner from './components/Banner'
 import Cesta from './pages/Cesta'
 import Login from './pages/Login'
 import { useState } from 'react'
+import Product from './pages/Product'
+import Error from './pages/Errors/Error'
+import NotFound from './pages/Errors/NotFound'
+import IsUser from './components/IsUser'
 
 function App() {
 
-  const [user, setUser] = useState(null)
-
-  const logout = () => {
-    localStorage.removeItem("user")
-    setUser(null)
-  }
-
   return (
     <>
-      <Navbar logout={logout} />
-      <Banner user={user} />
-      <Login setUser={setUser} />
-      {/* <Routes>
+      <Navbar />
+      <Banner />
+      <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/cesta' element={<Cesta />} />
-      </Routes> */}
-      <Home />
-      <Cesta />
+        <Route path='/cart' element={<IsUser><Cesta /></IsUser>} />
+        <Route path='/product/:id' element={<IsUser><Product /></IsUser>} />
+        <Route path='/error' element={<Error />} />
+        <Route path='/*' element={<NotFound />} />
+      </Routes>
       <Footer />
     </>
   )

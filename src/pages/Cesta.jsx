@@ -1,21 +1,43 @@
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { useState, useEffect } from "react"
+import { removeAllProducts } from "../redux/productSlice"
 
 
 const Cesta = () => {
 
     const productState = useSelector((state) => state.product)
+    const [cartProduct, setCartProduct] = useState(productState.products)
+    const dispatch = useDispatch()
 
-    const getTotal = () => {
-        return productState.products.reduce((acc, { price }) => {
+    useEffect(() => {
+        if (productState.products.length < 1) {
+            setCartProduct(JSON.parse(localStorage.getItem("cart")))
+        }
+    }, [])
+
+
+    const getTotal = (arr) => {
+        return arr.reduce((acc, { price }) => {
             return acc + price
         }, 0)
+    }
+
+    const removeProducts = () => {
+        setCartProduct([])
+        dispatch(removeAllProducts())
+    }
+
+    const pay = () => {
+
+        alert("Redirección a pasarela de pago")
+        removeProducts()
     }
 
     return (
         <main>
             <h1>Cesta</h1>
             {
-                productState.products.map(({ id, image, price, title, count }) => (
+                cartProduct.map(({ id, image, price, title, count }) => (
                     <article key={id}>
                         <img width={100} src={image} alt={id} />
                         <h2>{title}</h2>
@@ -23,7 +45,9 @@ const Cesta = () => {
                     </article>
                 ))
             }
-            <h2>Total {getTotal()}$</h2>
+            <h2>Total {getTotal(cartProduct)}$</h2>
+            <button onClick={pay}>Pagar</button>
+            <button onClick={removeProducts}>Eliminar productos</button>
         </main>
     )
 }

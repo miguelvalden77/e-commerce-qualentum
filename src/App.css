@@ -13,6 +13,10 @@
   background-color: rgb(54, 51, 51);
 }
 
+.navbar a {
+  color: whitesmoke;
+}
+
 .input-search {
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -35,7 +39,6 @@
 
 
 a {
-  color: whitesmoke;
   text-decoration: none;
 }
 
