@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import data from "../../data.json"
 
 const initialState = {
     products: [],
@@ -7,9 +6,10 @@ const initialState = {
     user: {
         username: "",
         email: "",
-        logged: false
+        logged: false,
+        rol: ""
     },
-    visibleProducts: data
+    search: ""
 }
 
 export const productSlice = createSlice({
@@ -38,18 +38,22 @@ export const productSlice = createSlice({
         },
         addUser: (state, action) => {
             const { username, email } = action.payload
-            state.user = { username, email, logged: true }
+            const rol = email.includes("@admin") ? "admin" : "user"
+            console.log(rol)
+            state.user = { username, email, logged: true, rol }
         },
         removeUser: (state, action) => {
             state.user = { username: "", email: "", logged: false }
         },
-        updateVisible: (state, action) => {
-            state.visibleProducts = data.filter((product) => product.title.includes(action.payload))
-            console.log(action.payload)
-            console.log(state.visibleProducts)
+        updateSearch: (state, action) => {
+            // state.visibleProducts = state.products.filter((product) => product.title.includes(action.payload))
+            state.search = action.payload
+        },
+        getProducts: (state, action) => {
+            state.products = action.payload
         }
     }
 })
 
-export const { addProduct, changeTheme, addUser, removeUser, removeAllProducts, updateVisible } = productSlice.actions
+export const { addProduct, changeTheme, addUser, removeUser, removeAllProducts, updateSearch, getProducts } = productSlice.actions
 export default productSlice.reducer

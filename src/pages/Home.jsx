@@ -1,15 +1,39 @@
-import data from "../../data.json"
 import { useDispatch, useSelector } from "react-redux"
-import { addProduct } from "../redux/productSlice"
+import { addProduct, getProducts } from "../redux/productSlice"
 import Banner from "../components/Banner"
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 
 const Home = () => {
 
     const dispatch = useDispatch()
-    const { visibleProducts, user: { logged } } = useSelector(state => state.product)
+    const { search, user: { logged } } = useSelector(state => state.product)
+    const [products, setProducts] = useState([])
+    const [visibleProducts, setVisibleProducts] = useState([])
+
+    const filterProducts = () => {
+
+        const productos = products.filter(product =>
+            product.title.toLowerCase().includes(search.toLowerCase())
+        );
+        setVisibleProducts(productos)
+    };
+
+    const getAllProducts = async () => {
+        const response = await fetch("http://localhost:3000/products")
+        const products = await response.json()
+        setProducts(products)
+        setVisibleProducts(products)
+    }
+
+    useEffect(() => {
+        getAllProducts()
+    }, [])
+
+    useEffect(() => {
+        filterProducts()
+    }, [search])
 
     return (
         <main>

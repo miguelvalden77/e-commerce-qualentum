@@ -67,9 +67,17 @@ a {
 
 .product-card {
   width: 200px;
-  height: 420px;
   border-radius: 5px;
   border: 1px gray solid;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.product-section {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
 }
 
 .product-card h2 {
@@ -99,8 +107,20 @@ a {
   margin: auto;
 }
 
+.actions-product {
+  display: flex;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+}
+
+.actions-product p {
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
 .info-container {
   display: flex;
+  gap: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
   height: calc(100% - 200px);
@@ -150,4 +170,62 @@ a {
 .add-section {
   display: flex;
   justify-content: space-between;
+}
+
+.login-section {
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.login-form {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.add-admin {
+  position: fixed;
+  right: 12%;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: red;
+  color: whitesmoke;
+  cursor: pointer;
+}
+
+.section-create {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  place-items: center;
+  display: grid;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.form-create {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  background-color: lightskyblue;
+  gap: 1rem;
+}
+
+.form-create input {
+  padding: 0.4rem;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+}
+
+.update-section {
+  display: grid;
+  place-items: center;
 }

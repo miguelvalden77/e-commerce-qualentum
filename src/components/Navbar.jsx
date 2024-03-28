@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { changeTheme, removeUser, updateVisible } from "../redux/productSlice"
+import { changeTheme, removeUser, updateSearch } from "../redux/productSlice"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
@@ -25,7 +25,7 @@ const Navbar = () => {
 
     const handleChange = (evt) => {
         setBusqueda(evt.target.value)
-        dispatch(updateVisible(evt.target.value))
+        dispatch(updateSearch(evt.target.value))
     }
 
     return (

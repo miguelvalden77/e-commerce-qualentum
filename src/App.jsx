@@ -6,11 +6,11 @@ import Footer from './components/Footer'
 import Banner from './components/Banner'
 import Cesta from './pages/Cesta'
 import Login from './pages/Login'
-import { useState } from 'react'
 import Product from './pages/Product'
 import Error from './pages/Errors/Error'
 import NotFound from './pages/Errors/NotFound'
 import IsUser from './components/IsUser'
+import AddProduct from './components/AddProduct'
 
 function App() {
 
@@ -18,6 +18,7 @@ function App() {
     <>
       <Navbar />
       <Banner />
+      <AddProduct />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />

@@ -1,20 +1,45 @@
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import productos from "../../data.json"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addProduct } from "../redux/productSlice"
+import UpdateProduct from "../components/UpdateProduct"
 
 const Product = () => {
 
     const { id } = useParams()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [product, setProduct] = useState(productos[id - 1])
+    const { user: { rol } } = useSelector(state => state.product)
+    const [product, setProduct] = useState({})
+    const [admin, setAdmin] = useState(false)
+
+    useEffect(() => {
+        getProduct()
+    }, [])
+
+    const getProduct = async () => {
+        const response = await fetch(`http://localhost:3000/products/${id}`)
+        const product = await response.json()
+        setProduct(product)
+    }
+
+    const handleDelete = async () => {
+        await fetch(`http://localhost:3000/products/${id}`, {
+            method: "DELETE",
+        })
+        navigate("/")
+    }
 
     return (
-        <main>
+        <main className="product-section">
             <Link to={"/"}>Volver</Link>
-            <h1>{id}</h1>
             <article className="product-card">
+                {
+                    rol == "admin" &&
+                    <div className="actions-product">
+                        <p onClick={() => setAdmin(true)}>✏ </p> <p onClick={handleDelete}>🗑️</p>
+                    </div>
+                }
                 <div className="img-container">
                     <img src={product.image} alt={product.title} />
                 </div>
@@ -27,6 +52,9 @@ const Product = () => {
                     </div>
                 </div>
             </article>
+            {
+                admin == true && <UpdateProduct id={id} title={product.title} description={product.description} price={product.price} setAdmin={setAdmin} />
+            }
         </main>
     )
 }

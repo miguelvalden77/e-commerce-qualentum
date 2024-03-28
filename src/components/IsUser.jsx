@@ -2,11 +2,11 @@ import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
 
 
-const IsUser = (children) => {
+const IsUser = ({ children }) => {
 
     const { user } = useSelector(state => state.product)
 
-    if (user.logged) {
+    if (user.logged == true) {
         return children
     } else {
         return <Navigate to={"/login"} />

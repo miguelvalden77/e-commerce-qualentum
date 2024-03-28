@@ -11,7 +11,12 @@ const Cesta = () => {
 
     useEffect(() => {
         if (productState.products.length < 1) {
-            setCartProduct(JSON.parse(localStorage.getItem("cart")))
+            const products = JSON.parse(localStorage.getItem("cart"))
+            if (products) {
+                setCartProduct(products)
+            } else {
+                setCartProduct([])
+            }
         }
     }, [])
 
@@ -24,6 +29,7 @@ const Cesta = () => {
 
     const removeProducts = () => {
         setCartProduct([])
+        localStorage.removeItem("cart")
         dispatch(removeAllProducts())
     }
 
