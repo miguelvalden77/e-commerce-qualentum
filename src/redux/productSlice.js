@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getProductsInitial } from "./thunks";
 
 const initialState = {
     products: [],
+    loading: true,
     theme: "light",
     user: {
         username: "",
@@ -46,12 +48,21 @@ export const productSlice = createSlice({
             state.user = { username: "", email: "", logged: false }
         },
         updateSearch: (state, action) => {
-            // state.visibleProducts = state.products.filter((product) => product.title.includes(action.payload))
             state.search = action.payload
         },
         getProducts: (state, action) => {
             state.products = action.payload
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getProductsInitial.fulfilled, (state, action) => {
+            state.products = action.payload
+
+            state.loading = false
+        }),
+            builder.addCase(getProductsInitial.pending, (state, action) => {
+                state.loading = true
+            })
     }
 })
 

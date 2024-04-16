@@ -3,14 +3,16 @@ import { addProduct, getProducts } from "../redux/productSlice"
 import Banner from "../components/Banner"
 import { Link } from "react-router-dom"
 import { useEffect, useMemo, useState } from "react"
+import { getProductsInitial } from "../redux/thunks"
+import { useIsLoading } from "../components/hooks/useIsLoading"
 
 
 const Home = () => {
 
     const dispatch = useDispatch()
-    const { search, user: { logged } } = useSelector(state => state.product)
-    const [products, setProducts] = useState([])
+    const { search, user: { logged }, products } = useSelector(state => state.product)
     const [visibleProducts, setVisibleProducts] = useState([])
+    const { loading } = useIsLoading()
 
     const filterProducts = () => {
 
@@ -23,25 +25,28 @@ const Home = () => {
     const getAllProducts = async () => {
         const response = await fetch("http://localhost:3000/products")
         const products = await response.json()
-        setProducts(products)
+        dispatch(getProductsInitial())
         setVisibleProducts(products)
     }
+
+    useEffect(() => {
+        filterProducts()
+    }, [search])
 
     useEffect(() => {
         getAllProducts()
     }, [])
 
-    useEffect(() => {
-        filterProducts()
-    }, [search])
+
+    if (loading) return <h1>Loading</h1>
 
     return (
         <main>
             <div className="main-products">
                 {
                     visibleProducts.map(({ id, title, price, image, description }) => (
-                        <Link to={`/product/${id}`} key={id}>
-                            <article className="product-card">
+                        <article className="product-card" key={id}>
+                            <Link to={`/product/${id}`}>
                                 <div className="img-container">
                                     <img src={image} alt={title} />
                                 </div>
@@ -50,11 +55,11 @@ const Home = () => {
                                     <p>{description}</p>
                                     <div className="add-section">
                                         <p className="price">{price}$</p>
-                                        {logged == true && <button onClick={() => dispatch(addProduct({ title, price, image, id }))}>Añadir</button>}
                                     </div>
                                 </div>
-                            </article>
-                        </Link>
+                            </Link>
+                            {logged == true && <button onClick={() => dispatch(addProduct({ title, price, image, id }))}>Añadir</button>}
+                        </article>
                     ))
                 }
             </div>
