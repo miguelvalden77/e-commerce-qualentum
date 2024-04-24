@@ -5,6 +5,7 @@ const initialState = {
     products: [],
     loading: true,
     theme: "light",
+    cart: [],
     user: {
         username: "",
         email: "",
@@ -19,14 +20,14 @@ export const productSlice = createSlice({
     initialState,
     reducers: {
         addProduct: (state, action) => {
-            const index = state.products.findIndex(product => product.id == action.payload.id)
+            const index = state.cart.findIndex(product => product.id == action.payload.id)
             if (index !== -1) {
-                state.products[index].count += 1
+                state.cart[index].count += 1
             } else {
-                state.products.push({ ...action.payload, count: 1 })
+                state.cart.push({ ...action.payload, count: 1 })
             }
 
-            localStorage.setItem("cart", JSON.stringify(state.products))
+            localStorage.setItem("cart", JSON.stringify(state.cart))
         },
         removeAllProducts: (state, action) => {
             state.products = []
@@ -52,6 +53,11 @@ export const productSlice = createSlice({
         },
         getProducts: (state, action) => {
             state.products = action.payload
+        },
+        addNewProduct: (state, action) => {
+            console.log(action.payload)
+            console.log("hola")
+            state.products.push(action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -66,5 +72,5 @@ export const productSlice = createSlice({
     }
 })
 
-export const { addProduct, changeTheme, addUser, removeUser, removeAllProducts, updateSearch, getProducts } = productSlice.actions
+export const { addProduct, changeTheme, addUser, removeUser, removeAllProducts, updateSearch, getProducts, addNewProduct } = productSlice.actions
 export default productSlice.reducer

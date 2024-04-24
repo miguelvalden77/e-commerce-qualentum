@@ -5,25 +5,24 @@ import { removeAllProducts } from "../redux/productSlice"
 
 const Cesta = () => {
 
-    const productState = useSelector((state) => state.product)
-    const [cartProduct, setCartProduct] = useState(productState.products)
+    const cartState = useSelector((state) => state.cart)
+    const [cartProduct, setCartProduct] = useState([])
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (productState.products.length < 1) {
-            const products = JSON.parse(localStorage.getItem("cart"))
-            if (products) {
-                setCartProduct(products)
-            } else {
-                setCartProduct([])
-            }
+        const products = JSON.parse(localStorage.getItem("cart"))
+        if (!products) {
+            setCartProduct([])
+        }
+        else {
+            setCartProduct(products)
         }
     }, [])
 
 
     const getTotal = (arr) => {
         return arr.reduce((acc, { price }) => {
-            return acc + price
+            return acc + Number(price)
         }, 0)
     }
 

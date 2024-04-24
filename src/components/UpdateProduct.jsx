@@ -1,26 +1,23 @@
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 
 
 
 const UpdateProduct = ({ title, description, price, id, setAdmin }) => {
 
-    const [productData, setProductData] = useState({ title, description, price })
+    const { register, handleSubmit, formState: { errors } } = useForm()
+    const navigate = useNavigate()
 
-    const handleData = (evt) => {
-        setProductData({ ...productData, [evt.target.name]: evt.target.value })
-        console.log({ ...productData, [evt.target.name]: evt.target.value })
-    }
-
-    const handleUpdate = async (evt) => {
-        evt.preventDefault()
+    const handleUpdate = async (info) => {
         const response = await fetch(`http://localhost:3000/products/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(productData)
+            body: JSON.stringify(info)
         })
-        const data = await response.json()
+        navigate("/")
     }
 
     const abortUpdate = (evt) => {
@@ -30,11 +27,17 @@ const UpdateProduct = ({ title, description, price, id, setAdmin }) => {
 
     return (
         <section className="section-create">
-            <form className="form-create" onSubmit={handleUpdate}>
+            <form className="form-create" onSubmit={handleSubmit((data) => handleUpdate(data))}>
                 <h2>Update product</h2>
-                <input onChange={handleData} type="text" placeholder="title" name="title" value={productData.title} />
-                <input onChange={handleData} type="text" placeholder="description" name="description" value={productData.description} />
-                <input onChange={handleData} type="number" placeholder="price" name="price" value={productData.price} />
+
+                {errors.title && <p>{errors.title.message}</p>}
+                <input defaultValue={title} {...register("title", { required: "El titulo es requerido", minLength: { value: 6, message: "minimo 6 caracteres" } })} type="text" placeholder="title" name="title" />
+
+                {errors.description && <p>{errors.description.message}</p>}
+                <input defaultValue={description} {...register("description", { required: "La descripcion es requerida", minLength: { value: 10, message: "minimo 10 caracteres" } })} type="text" placeholder="description" name="description" />
+
+                {errors.price && <p>{errors.price.message}</p>}
+                <input defaultValue={price} {...register("price", { required: "precio obligatorio", min: { value: 0, message: "Como minimo 0" } })} type="number" placeholder="price" name="price" />
 
                 <button>Update</button>
                 <button onClick={abortUpdate}>Cancelar</button>

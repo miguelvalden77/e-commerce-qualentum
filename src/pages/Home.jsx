@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { addProduct, getProducts } from "../redux/productSlice"
+import { addNewProduct, addProduct, getProducts } from "../redux/productSlice"
 import Banner from "../components/Banner"
 import { Link } from "react-router-dom"
 import { useEffect, useMemo, useState } from "react"
